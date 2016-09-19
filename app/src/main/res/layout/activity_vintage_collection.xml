@@ -7,6 +7,7 @@
     android:paddingLeft="0dp"
     android:paddingRight="0dp"
     android:paddingTop="0dp"
+    android:id="@+id/search_title_bar"
     tools:context="com.vintage.vintage.VintageCollectionActivity">
 
     <RelativeLayout
@@ -18,12 +19,13 @@
             android:layout_height="match_parent"
             android:layout_alignParentTop="true"
             android:orientation="horizontal"
-            android:background="@color/colorPrimary">
+            android:background="@color/colorPrimary"
+            android:id="@+id/title_ham_and_label_layout">
             <Button
                 android:layout_width="65dp"
                 android:layout_height="match_parent"
                 android:id="@+id/hamburger_button"
-                android:background="@xml/hamburger_press"/>
+                android:background="@xml/title_hamburger_press"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -31,32 +33,38 @@
                 android:text="@string/bold_app_name"
                 android:textSize="15sp"
                 android:textColor="@android:color/white"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentEnd="true"
+            android:layout_centerInParent="true"
+            android:orientation="horizontal">
             <ScrollView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:id="@+id/search_scroll">
+                android:id="@+id/title_search_scroll">
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:paddingTop="10dp"
+                    android:id="@+id/title_search_text_container"
                     android:orientation="horizontal">
                     <EditText
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:paddingStart="10dp"
                         android:singleLine="true"
-                        android:id="@+id/search_edit_text"/>
+                        android:textColor="@color/colorSearchText"
+                        android:id="@+id/title_search_edit_text"/>
                 </LinearLayout>
-
             </ScrollView>
-
+            <Button
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_gravity="center"
+                android:background="@xml/search_icon_press"
+                android:id="@+id/title_search_button"/>
         </LinearLayout>
-        <Button
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_alignParentEnd="true"
-            android:layout_centerInParent="true"
-            android:background="@xml/search_icon_press"
-            android:id="@+id/search_button"/>
     </RelativeLayout>
 </RelativeLayout>
