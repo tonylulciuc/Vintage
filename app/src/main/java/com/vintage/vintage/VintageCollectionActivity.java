@@ -23,26 +23,11 @@ public class VintageCollectionActivity extends AppCompatActivity {
             getDeviceDimensions();
 
         adjustTitle();
-
-
     }
 
     /**
-     * Change app view based on Portrait viewing
-     * @param _configuration [in] portrait config
+     * Adjust to orientation change
      */
-    protected void changeToPortrait(Configuration _configuration){
-        adjustTitle();
-    }
-
-    /**
-     * Change app view based on Landscape viewing
-     * @param _configuration [in] landscape config
-     */
-    protected void changeToLandscape(Configuration _configuration){
-        adjustTitle();
-    }
-
     private void adjustTitle(){
         View scrollSearch = findViewById(R.id.title_search_scroll);
         View buttonSearch = findViewById(R.id.title_search_button);
@@ -58,6 +43,9 @@ public class VintageCollectionActivity extends AppCompatActivity {
         scrollSearch.setLayoutParams(lpScrollSearch);
     }
 
+    /**
+     * Acquire device size
+     */
     private void getDeviceDimensions(){
         WindowManager manager = getWindowManager();
         Display display = manager.getDefaultDisplay();
