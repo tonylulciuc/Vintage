@@ -8,6 +8,7 @@ import com.vintage.vintage.bean.item_link;
 
 /**
  * Created by Antony Lulciuc on 9/20/2016.
+ * Used to store results from queries made
  */
 
 public class SingleItem {
