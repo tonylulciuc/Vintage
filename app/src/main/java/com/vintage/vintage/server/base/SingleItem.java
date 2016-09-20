@@ -12,7 +12,7 @@ import com.vintage.vintage.bean.item_link;
  */
 
 public class SingleItem {
-    public item            header;
-    public item_info       description;
-    public BackendlessCollection<item_link> sources;
+    public item      header = null;
+    public item_info description = null;
+    public BackendlessCollection<item_link> sources = null;
 }
