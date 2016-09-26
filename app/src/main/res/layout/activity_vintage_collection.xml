@@ -9,128 +9,26 @@
     android:paddingTop="0dp"
     android:id="@+id/search_title_bar"
     tools:context="com.vintage.vintage.VintageCollectionActivity">
-
-    <RelativeLayout
+    <android.support.v4.widget.DrawerLayout
         android:layout_width="match_parent"
-        android:layout_height="65dp"
-        android:id="@+id/title_search_bar"
-        android:background="@color/colorPrimary">
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_alignParentTop="true"
-            android:orientation="horizontal"
-            android:background="@color/colorPrimary"
-            android:id="@+id/title_ham_and_label_layout">
-            <Button
-                android:layout_width="65dp"
-                android:layout_height="match_parent"
-                android:id="@+id/hamburger_button"
-                android:background="@xml/title_hamburger_press"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingTop="15dp"
-                android:text="@string/bold_app_name"
-                android:textSize="15sp"
-                android:textColor="@android:color/white"/>
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_alignParentEnd="true"
-            android:layout_centerInParent="true"
-            android:orientation="horizontal">
+        android:layout_height="match_parent"
+        android:id="@+id/search_drawer_layout"
+        android:layout_below="@+id/title_search_bar">
+        <FrameLayout
+            android:id="@+id/content_frame"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
             <ScrollView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:id="@+id/title_search_scroll">
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/result_set_scroll">
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingTop="10dp"
-                    android:id="@+id/title_search_text_container"
-                    android:orientation="horizontal">
-                    <EditText
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:singleLine="true"
-                        android:textColor="@color/colorSearchText"
-                        android:id="@+id/title_search_edit_text"/>
-                </LinearLayout>
+                    android:orientation="vertical"/>
             </ScrollView>
-            <Button
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:layout_gravity="center"
-                android:background="@xml/search_icon_press"
-                android:id="@+id/title_search_button"/>
-        </LinearLayout>
-    </RelativeLayout>
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/title_search_bar"
-        android:id="@+id/result_set_scroll">
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-            <Button
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"/>
-            <Button
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"/>
-            <Button
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"/>
-            <Button
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"/>
-            <Button
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"/>
-            <Button
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"/>
-            <Button
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"/>
-            <Button
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"/>
-            <Button
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"/>
-            <Button
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"/>
-            <Button
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"/>
-            <Button
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"/>
-            <Button
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"/>
-            <Button
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"/>
-            <Button
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"/>
-            <Button
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"/>
-            <Button
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"/>
-            <Button
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"/>
-        </LinearLayout>
-    </ScrollView>
+        </FrameLayout>
+        <include layout="@layout/layout_search_drawer_menu"/>
+    </android.support.v4.widget.DrawerLayout>
+    <include layout="@layout/layout_title_bar"/>
 </RelativeLayout>

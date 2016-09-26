@@ -57,7 +57,7 @@ public class item
 
   public void setSeries_number(String series_number) { this.series_number = series_number; }
 
-  public String getSeries_number(){ return this.series_number); }
+  public String getSeries_number(){ return (this.series_number); }
 
   public String getVariation()
   {
