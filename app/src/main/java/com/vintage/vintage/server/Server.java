@@ -44,7 +44,7 @@ public class Server {
      * @param _query
      * @param _for
      */
-    void get(Result _result, String _query, int _for){
+    public void get(Result _result, String _query, int _for){
         Instruction instruction = null;
         Thread work;
 
@@ -59,5 +59,6 @@ public class Server {
         work = new Thread(new RunnableInstruction(instruction, new Object[]{_result, _query}));
         work.start();
     }
+
 
 }

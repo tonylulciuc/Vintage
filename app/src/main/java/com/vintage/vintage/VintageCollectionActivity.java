@@ -4,6 +4,7 @@ import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.graphics.Point;
 import android.os.Handler;
+import android.os.Looper;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
@@ -15,6 +16,9 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.Toast;
 
 import com.backendless.BackendlessCollection;
@@ -28,12 +32,14 @@ public class VintageCollectionActivity extends AppCompatActivity {
     protected Result<BackendlessCollection<item>> m_ResultSet;
     protected DrawerLayout m_DrawerLayoutLeft;
     protected Layout       m_DrawerLayoutContent;
+    protected ListView     m_ContentList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_vintage_collection);
 
+        m_ContentList = (ListView)findViewById(R.id.content_list);
         m_DrawerLayoutLeft = (DrawerLayout)findViewById(R.id.search_drawer_layout);
         m_ResultSet = new Result<>();
         VintageServer = new Server(this);
@@ -42,8 +48,14 @@ public class VintageCollectionActivity extends AppCompatActivity {
         if (DeviceSize == null)
             getDeviceDimensions();
 
+        // TEMPORARY
+        String[] data = new String[]{"one", "two", "three","one", "two", "three","one", "two", "three","one", "two", "three","one", "two", "three"};
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, data);
 
-        populateList("matchbox_car", "0-10");
+        m_ContentList.setAdapter(arrayAdapter);
+        // TEMPORARY
+
+        //populateList("matchbox_car", "0-10");
         adjustTitle();
     }
 
@@ -53,16 +65,23 @@ public class VintageCollectionActivity extends AppCompatActivity {
     private void adjustTitle(){
         View scrollSearch = findViewById(R.id.title_search_scroll);
         View buttonSearch = findViewById(R.id.title_search_button);
+        View titleSearch  = findViewById(R.id.title_search_bar);
         ViewGroup.LayoutParams lpScrollSearch = scrollSearch.getLayoutParams();
         ViewGroup.LayoutParams lpButtonSearch = buttonSearch.getLayoutParams();
+        ViewGroup.LayoutParams lpResultScroll = m_ContentList.getLayoutParams();
+        ViewGroup.LayoutParams lpTitleSearch  = titleSearch.getLayoutParams();
 
         if (this.getResources().getConfiguration().orientation == ActivityInfo.SCREEN_ORIENTATION_PORTRAIT) {
             lpScrollSearch.width = DeviceSize.x - (int)((double)DeviceSize.x * 0.25 + (double)(2 * lpButtonSearch.width));
+            lpResultScroll.height = DeviceSize.y - lpTitleSearch.height;
         }else{
             lpScrollSearch.width = DeviceSize.y - (int)((double)DeviceSize.y * 0.25 + (double)(2 * lpButtonSearch.width));
+            lpResultScroll.height = DeviceSize.x - lpTitleSearch.height;
         }
 
+
         scrollSearch.setLayoutParams(lpScrollSearch);
+        m_ContentList.setLayoutParams(lpResultScroll);
     }
 
     /**
@@ -80,7 +99,20 @@ public class VintageCollectionActivity extends AppCompatActivity {
      * @param _query [in] query
      */
     public void populateList(String _name, String _query){
+        Thread population = new Thread(new Runnable() {
+            @Override
+            @SuppressWarnings("all")
+            public void run() {
+                Handler handle = new Handler(Looper.getMainLooper());
 
+                while (m_ResultSet.result == null);
+
+                populateList();
+            }
+        });
+
+        VintageServer.get(m_ResultSet, _query, Server.DATA_MATCHBOX);
+        population.start();
     }
 
     /**
@@ -98,4 +130,7 @@ public class VintageCollectionActivity extends AppCompatActivity {
         }
     }
 
+    private void populateList(){
+        // TODO : populate List view with resultset
+    }
 }
