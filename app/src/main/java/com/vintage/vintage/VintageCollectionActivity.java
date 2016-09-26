@@ -22,9 +22,14 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.backendless.BackendlessCollection;
+import com.vintage.vintage.adapter.VintageAdapter;
+import com.vintage.vintage.adapter.VintageItem;
 import com.vintage.vintage.bean.item;
 import com.vintage.vintage.server.Server;
 import com.vintage.vintage.server.base.Result;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class VintageCollectionActivity extends AppCompatActivity {
     public static Point DeviceSize = null;
@@ -49,10 +54,14 @@ public class VintageCollectionActivity extends AppCompatActivity {
             getDeviceDimensions();
 
         // TEMPORARY
-        String[] data = new String[]{"one", "two", "three","one", "two", "three","one", "two", "three","one", "two", "three","one", "two", "three"};
-        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, data);
+        List<VintageItem> items = new ArrayList<>();
+        items.add(new VintageItem());
+        items.add(new VintageItem());
+        items.add(new VintageItem());
 
-        m_ContentList.setAdapter(arrayAdapter);
+
+        VintageAdapter vintageAdapter = new VintageAdapter(this, R.layout.layout_vintage_item, items);
+        m_ContentList.setAdapter(vintageAdapter);
         // TEMPORARY
 
         //populateList("matchbox_car", "0-10");
