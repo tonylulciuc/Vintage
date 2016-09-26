@@ -18,47 +18,33 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@xml/drawer_button_press"
-                android:text="refresh"/>
+                android:text="@string/refresh"/>
             <Button
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@xml/drawer_button_press"
-                android:text="Matchbox Cars"/>
+                android:text="@string/matchbox_cars"/>
             <Button
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@xml/drawer_button_press"
-                android:text="Something Else"/>
+                android:text="@string/something_else"/>
+
             <Button
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@xml/drawer_button_press"
-                android:text="Something Else"/>
+                android:text="@string/settings"/>
             <Button
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@xml/drawer_button_press"
-                android:text="Something Else"/>
+                android:text="@string/help"/>
             <Button
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@xml/drawer_button_press"
-                android:text="Something Else"/>
-            <Button
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@xml/drawer_button_press"
-                android:text="Settings"/>
-            <Button
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@xml/drawer_button_press"
-                android:text="Help"/>
-            <Button
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@xml/drawer_button_press"
-                android:text="Sign out"/>
+                android:text="@string/sign_out"/>
         </LinearLayout>
     </ScrollView>
 </LinearLayout>
