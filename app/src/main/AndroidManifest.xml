@@ -12,7 +12,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".VintageCollectionActivity"
+            android:name=".VintageActivity"
             android:theme="@style/AppTheme.Vintage"/>
         <activity
             android:name=".VintageSplashActivity"
@@ -25,7 +25,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".VintageItemSpecActivity"
-            android:parentActivityName=".VintageCollectionActivity"/>
+            android:parentActivityName=".VintageActivity"/>
     </application>
 
 </manifest>

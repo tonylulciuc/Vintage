@@ -71,6 +71,45 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:text="@string/scarcity"
+                            android:background="@color/colorAccent"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/vintage_item_scarcity_text"
+                            android:text="@string/none"
+                            android:background="@color/colorAccent"/>
+                    </TableRow>
+                    <TableRow>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/original_price"
+                            android:background="@color/colorAccent"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/vintage_item_original_price_text"
+                            android:text="@string/none"
+                            android:background="@color/colorAccent"/>
+                    </TableRow>
+                    <TableRow>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/current_price"
+                            android:background="@color/colorAccent"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/vintage_item_current_price_text"
+                            android:text="@string/none"
+                            android:background="@color/colorAccent"/>
+                    </TableRow>
+                    <TableRow>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
                             android:text="@string/series_number"
                             android:background="@color/colorAccent"/>
 

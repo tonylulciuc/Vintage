@@ -43,43 +43,25 @@ public class VintageCollectionActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_vintage_collection);
 
-        m_ContentListLeft = (ListView)findViewById(R.id.content_list_left);
-        m_ContentListRight = (ListView)findViewById(R.id.content_list_right);
-        m_DrawerLayoutLeft = (DrawerLayout)findViewById(R.id.search_drawer_layout);
-        m_ResultSet = new Result<>();
-        VintageServer = new Server(this);
+        m_ContentListLeft   = (ListView)findViewById(R.id.content_list_left);
+        m_ContentListRight  = (ListView)findViewById(R.id.content_list_right);
+        m_DrawerLayoutLeft  = (DrawerLayout)findViewById(R.id.search_drawer_layout);
+        m_ResultSet         = new Result<>();
+        VintageServer       = new Server(this);
+        m_lVintageItemLeft  = new ArrayList<>();
+        m_lVintageItemRight = new ArrayList<>();
+
+        // Login into server to access database
         VintageServer.login("tuf77259@temple.edu", "dh5yfhf4jakdj");
 
+        // If device dimensions were not calculated
         if (DeviceSize == null)
             getDeviceDimensions();
 
-        // TEMPORARY
-        m_lVintageItemLeft  = new ArrayList<>();
-        m_lVintageItemLeft.add(new VintageItem());
-        m_lVintageItemLeft.add(new VintageItem());
-        m_lVintageItemLeft.add(new VintageItem());
-        m_lVintageItemLeft.add(new VintageItem());
-        m_lVintageItemLeft.add(new VintageItem());
-        m_lVintageItemLeft.add(new VintageItem());
-        m_lVintageItemLeft.add(new VintageItem());
-
-        m_lVintageItemRight = new ArrayList<>();
-        m_lVintageItemRight.add(new VintageItem());
-        m_lVintageItemRight.add(new VintageItem());
-        m_lVintageItemRight.add(new VintageItem());
-        m_lVintageItemRight.add(new VintageItem());
-        m_lVintageItemRight.add(new VintageItem());
-        m_lVintageItemRight.add(new VintageItem());
-        m_lVintageItemRight.add(new VintageItem());
-
-        VintageAdapter vintageAdapter = new VintageAdapter(this, R.layout.layout_vintage_item_list, m_lVintageItemRight);
-        m_ContentListLeft.setAdapter(vintageAdapter);
-        m_ContentListRight.setAdapter(vintageAdapter);
         m_ContentListLeft.setVerticalScrollBarEnabled(false);
         m_ContentListRight.setVerticalScrollBarEnabled(false);
 
         // TEMPORARY
-
         AdapterView.OnItemClickListener ocl = new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -90,7 +72,7 @@ public class VintageCollectionActivity extends AppCompatActivity {
 
         m_ContentListLeft.setOnItemClickListener(ocl);
         m_ContentListRight.setOnItemClickListener(ocl);
-        //populateList("matchbox_car", "0-10");
+
         adjustTitle();
     }
 
@@ -100,42 +82,36 @@ public class VintageCollectionActivity extends AppCompatActivity {
     private void adjustTitle(){
         View scrollSearch = findViewById(R.id.title_search_scroll);
         View buttonSearch = findViewById(R.id.title_search_button);
-        View titleSearch  = findViewById(R.id.title_search_bar);
-        View resultScroll = findViewById(R.id.result_set_scroll);
-        View frameView = findViewById(R.id.content_frame);
         ViewGroup.LayoutParams lpScrollSearch = scrollSearch.getLayoutParams();
         ViewGroup.LayoutParams lpButtonSearch = buttonSearch.getLayoutParams();
-        ViewGroup.LayoutParams lpContentListLeft = m_ContentListLeft.getLayoutParams();
+        ViewGroup.LayoutParams lpContentListLeft  = m_ContentListLeft.getLayoutParams();
         ViewGroup.LayoutParams lpContentListRight = m_ContentListRight.getLayoutParams();
-        ViewGroup.LayoutParams lpTitleSearch  = titleSearch.getLayoutParams();
-        ViewGroup.LayoutParams lpResultSearch = resultScroll.getLayoutParams();
-        ViewGroup.LayoutParams lpFrameView    = frameView.getLayoutParams();
-        int density = getResources().getDisplayMetrics().densityDpi;
-        int listLeftSize = m_lVintageItemLeft.size();
-        int listRightSize = m_lVintageItemRight.size();
 
         if (this.getResources().getConfiguration().orientation == ActivityInfo.SCREEN_ORIENTATION_PORTRAIT) {
-            lpScrollSearch.width = DeviceSize.x - (int)((double)DeviceSize.x * 0.25 + (double)(2 * lpButtonSearch.width));
-            lpResultSearch.height = DeviceSize.y - lpTitleSearch.height;
-            lpContentListLeft.width = DeviceSize.x / 2;
+            lpScrollSearch.width     = DeviceSize.x - (int)((double)DeviceSize.x * 0.25 + (double)(2 * lpButtonSearch.width));
+            lpContentListRight.width = lpContentListLeft.width = DeviceSize.x / 2;
         }else{
-            lpScrollSearch.width = DeviceSize.y - (int)((double)DeviceSize.y * 0.25 + (double)(2 * lpButtonSearch.width));
-            lpResultSearch.height = DeviceSize.x - lpTitleSearch.height;
-            lpContentListLeft.width = DeviceSize.y / 2;
+            lpScrollSearch.width     = DeviceSize.y - (int)((double)DeviceSize.y * 0.25 + (double)(2 * lpButtonSearch.width));
+            lpContentListRight.width = lpContentListLeft.width = DeviceSize.y / 2;
         }
 
-
-        lpContentListRight.height = density * (listLeftSize > listRightSize ? listLeftSize : listRightSize);
-        lpContentListLeft.height = lpContentListRight.height;
-        lpContentListRight.width = lpContentListLeft.width;
-
-        resultScroll.setLayoutParams(lpResultSearch);
         scrollSearch.setLayoutParams(lpScrollSearch);
         m_ContentListLeft.setLayoutParams(lpContentListLeft);
         m_ContentListRight.setLayoutParams(lpContentListRight);
     }
 
+    protected void resizeContentLists(){
+        ViewGroup.LayoutParams lpContentListLeft = m_ContentListLeft.getLayoutParams();
+        ViewGroup.LayoutParams lpContentListRight = m_ContentListRight.getLayoutParams();
+        int density = getResources().getDisplayMetrics().densityDpi;
+        int listLeftSize = m_lVintageItemLeft.size();
+        int listRightSize = m_lVintageItemRight.size();
 
+        lpContentListRight.height = density * listRightSize;
+        lpContentListLeft.height  = density * listLeftSize;
+        m_ContentListLeft.setLayoutParams(lpContentListLeft);
+        m_ContentListRight.setLayoutParams(lpContentListRight);
+    }
 
     /**
      * Acquire device size
@@ -151,7 +127,7 @@ public class VintageCollectionActivity extends AppCompatActivity {
      * @param _name [in] type of item to select
      * @param _query [in] query
      */
-    public void populateList(String _name, String _query){
+    public void preformQuery(String _name, String _query){
         Thread population = new Thread(new Runnable() {
             @Override
             @SuppressWarnings("all")
@@ -160,7 +136,7 @@ public class VintageCollectionActivity extends AppCompatActivity {
 
                 while (m_ResultSet.result == null);
 
-                populateList();
+                populateContentLists();
             }
         });
 
@@ -183,7 +159,22 @@ public class VintageCollectionActivity extends AppCompatActivity {
         }
     }
 
-    private void populateList(){
-        // TODO : populate List view with resultset
+    /**
+     * Populate selection based on query
+     */
+    protected void populateContentLists(){
+        VintageAdapter vintageAdapter;
+
+        m_lVintageItemRight.add(new VintageItem());
+        m_lVintageItemRight.add(new VintageItem());
+        m_lVintageItemRight.add(new VintageItem());
+        m_lVintageItemRight.add(new VintageItem());
+        m_lVintageItemLeft.add(new VintageItem());
+        m_lVintageItemLeft.add(new VintageItem());
+
+        vintageAdapter = new VintageAdapter(this, R.layout.layout_vintage_item_list, m_lVintageItemRight);
+
+        m_ContentListLeft.setAdapter(vintageAdapter);
+        m_ContentListRight.setAdapter(vintageAdapter);
     }
 }

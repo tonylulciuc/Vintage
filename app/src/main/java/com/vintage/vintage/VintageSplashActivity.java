@@ -11,7 +11,7 @@ public class VintageSplashActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_vintage_splash);
-        Intent intent = new Intent(VintageSplashActivity.this, VintageCollectionActivity.class);
+        Intent intent = new Intent(VintageSplashActivity.this, VintageActivity.class);
         startActivity(intent);
         finish();
     }
