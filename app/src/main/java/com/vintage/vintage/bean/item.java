@@ -20,6 +20,7 @@ public class item
   private Integer year;
   private String item_img_low_res;
   private java.util.Date created;
+
   public String getModel()
   {
     return model;

@@ -20,9 +20,14 @@
             android:layout_height="match_parent">
             <ScrollView
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:id="@+id/result_set_scroll">
-                <include layout="@layout/layout_list_content"/>
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="800dp"
+                    android:id="@+id/result_set_layout">
+                    <include layout="@layout/layout_list_content"/>
+                </RelativeLayout>
             </ScrollView>
         </FrameLayout>
         <include layout="@layout/layout_search_drawer_menu"/>
