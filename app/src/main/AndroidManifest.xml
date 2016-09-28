@@ -24,7 +24,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".VintageItemSpecActivity"
+        <activity android:name=".VintageCollectableDisplayActivity"
             android:parentActivityName=".VintageActivity"/>
     </application>
 

@@ -20,23 +20,27 @@ import android.widget.ListView;
 import com.backendless.BackendlessCollection;
 import com.vintage.vintage.adapter.VintageAdapter;
 import com.vintage.vintage.adapter.VintageItem;
+import com.vintage.vintage.adapter.VintageOnItemClickListener;
 import com.vintage.vintage.bean.item;
 import com.vintage.vintage.server.Server;
 import com.vintage.vintage.server.base.Result;
+import com.vintage.vintage.server.base.SingleItem;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class VintageCollectionActivity extends AppCompatActivity {
     public static Point DeviceSize = null;
-    public static Server VintageServer;
-    protected Result<BackendlessCollection<item>> m_ResultSet;
+    public static Server VintageServer = null;
+    public static Result<SingleItem> SingleItemRequest;
+    protected static Result<List<item>> m_CollectionResultSet;
+    protected static List<VintageItem> m_lVintageItemLeft;
+    protected static List<VintageItem> m_lVintageItemRight;
     protected DrawerLayout m_DrawerLayoutLeft;
     protected Layout       m_DrawerLayoutContent;
     protected ListView     m_ContentListLeft;
     protected ListView     m_ContentListRight;
-    protected List<VintageItem> m_lVintageItemLeft;
-    protected List<VintageItem> m_lVintageItemRight;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,10 +50,14 @@ public class VintageCollectionActivity extends AppCompatActivity {
         m_ContentListLeft   = (ListView)findViewById(R.id.content_list_left);
         m_ContentListRight  = (ListView)findViewById(R.id.content_list_right);
         m_DrawerLayoutLeft  = (DrawerLayout)findViewById(R.id.search_drawer_layout);
-        m_ResultSet         = new Result<>();
-        VintageServer       = new Server(this);
-        m_lVintageItemLeft  = new ArrayList<>();
-        m_lVintageItemRight = new ArrayList<>();
+
+        if (VintageServer == null){
+            VintageServer = new Server(this);
+            SingleItemRequest   = new Result<>();
+            m_lVintageItemLeft = new ArrayList<>();
+            m_lVintageItemRight = new ArrayList<>();
+            m_CollectionResultSet = new Result<>();
+        }
 
         // Login into server to access database
         VintageServer.login("tuf77259@temple.edu", "dh5yfhf4jakdj");
@@ -61,17 +69,8 @@ public class VintageCollectionActivity extends AppCompatActivity {
         m_ContentListLeft.setVerticalScrollBarEnabled(false);
         m_ContentListRight.setVerticalScrollBarEnabled(false);
 
-        // TEMPORARY
-        AdapterView.OnItemClickListener ocl = new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = new Intent(VintageCollectionActivity.this, VintageItemSpecActivity.class);
-                startActivity(intent);
-            }
-        };
-
-        m_ContentListLeft.setOnItemClickListener(ocl);
-        m_ContentListRight.setOnItemClickListener(ocl);
+        m_ContentListLeft.setOnItemClickListener(new VintageOnItemClickListener(this, m_lVintageItemLeft));
+        m_ContentListRight.setOnItemClickListener(new VintageOnItemClickListener(this, m_lVintageItemRight));
 
         adjustTitle();
     }
@@ -127,20 +126,31 @@ public class VintageCollectionActivity extends AppCompatActivity {
      * @param _name [in] type of item to select
      * @param _query [in] query
      */
-    public void preformQuery(String _name, String _query){
+    public void preformQuery(String _name, String _query, List<Object> _extra){
         Thread population = new Thread(new Runnable() {
             @Override
             @SuppressWarnings("all")
             public void run() {
                 Handler handle = new Handler(Looper.getMainLooper());
 
-                while (m_ResultSet.result == null);
+                while (m_CollectionResultSet.isSet == false);
 
-                populateContentLists();
+                handle.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        populateContentLists();
+                        resizeContentLists();
+                    }
+                });
             }
         });
 
-        VintageServer.get(m_ResultSet, _query, Server.DATA_MATCHBOX);
+        if (m_CollectionResultSet.result == null){
+            m_CollectionResultSet.result = new ArrayList<>();
+        }
+
+        m_CollectionResultSet.isSet = false;
+        VintageServer.get(m_CollectionResultSet, _query, Server.DATA_MATCHBOX, _extra);
         population.start();
     }
 

@@ -12,7 +12,7 @@ public class item
   private String model;
   private java.util.Date updated;
   private String item_info_id;
-  private String name;
+  private String item_name;
   private String variation;
   private String objectId;
   private String ownerId;
@@ -46,14 +46,14 @@ public class item
     this.item_info_id = item_info_id;
   }
 
-  public String getName()
+  public String getItemName()
   {
-    return name;
+    return item_name;
   }
 
-  public void setName( String name )
+  public void setItemName( String name )
   {
-    this.name = name;
+    this.item_name = name;
   }
 
   public void setSeries_number(String series_number) { this.series_number = series_number; }

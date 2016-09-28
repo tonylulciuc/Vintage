@@ -6,6 +6,7 @@ package com.vintage.vintage.server.base;
 
 public class Result<T> {
     public T result = null;
+    public boolean isSet = false;
 
     /**
      * Reinterprets cast for result

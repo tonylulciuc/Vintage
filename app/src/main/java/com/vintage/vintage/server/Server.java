@@ -9,6 +9,8 @@ import com.vintage.vintage.server.base.Instruction;
 import com.vintage.vintage.server.base.Result;
 import com.vintage.vintage.server.base.RunnableInstruction;
 
+import java.util.List;
+
 /**
  * Created by Antony Lulciuc on 9/20/2016.
  */
@@ -44,7 +46,7 @@ public class Server {
      * @param _query
      * @param _for
      */
-    public void get(Result _result, String _query, int _for){
+    public void get(Result _result, String _query, int _for, List<Object> _extra){
         Instruction instruction = null;
         Thread work;
 
@@ -56,7 +58,7 @@ public class Server {
                 break;
         }
 
-        work = new Thread(new RunnableInstruction(instruction, new Object[]{_result, _query}));
+        work = new Thread(new RunnableInstruction(instruction, new Object[]{_result, _query, _extra}));
         work.start();
     }
 
