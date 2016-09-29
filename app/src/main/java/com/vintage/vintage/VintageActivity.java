@@ -2,6 +2,9 @@ package com.vintage.vintage;
 
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.EditText;
+import android.widget.TextView;
 
 import com.vintage.vintage.adapter.VintageAdapter;
 import com.vintage.vintage.adapter.VintageItem;
@@ -22,7 +25,7 @@ public class VintageActivity extends VintageCollectionActivity {
         super.onCreate(_savedInstance);
 
         if (m_lVintageItemLeft.size() == 0 && m_lVintageItemRight.size() == 0)
-            preformQuery("matchbox_car", "item_name= \'matchbox_car\'", m_lItemImage);
+            preformQuery("matchbox_car", "matchbox car", m_lItemImage);
         else{
             this.populateContentLists();
             this.resizeContentLists();
@@ -58,5 +61,11 @@ public class VintageActivity extends VintageCollectionActivity {
         }
     }
 
+    public  void onSearchClick(View _view){
+        EditText searchEditText = (EditText)findViewById(R.id.title_search_edit_text);
+        String query = searchEditText.getText().toString();
 
+        m_lItemImage.clear();
+        preformQuery("matchbox_car", query, m_lItemImage);
+    }
 }

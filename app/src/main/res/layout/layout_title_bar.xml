@@ -55,6 +55,7 @@
             android:layout_height="50dp"
             android:layout_gravity="center"
             android:background="@xml/search_icon_press"
+            android:onClick="onSearchClick"
             android:id="@+id/title_search_button"/>
     </LinearLayout>
 </RelativeLayout>
