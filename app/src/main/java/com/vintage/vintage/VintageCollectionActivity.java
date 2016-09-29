@@ -43,6 +43,7 @@ public class VintageCollectionActivity extends AppCompatActivity {
     private static Normalizer m_VariationNormalizer = null;
     private static Normalizer m_YearNormalizer = null;
     private static Normalizer m_SeriesNumberNormalizer = null;
+    protected static String m_OldQuery = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -144,25 +145,11 @@ public class VintageCollectionActivity extends AppCompatActivity {
             m_CollectionResultSet.result = new ArrayList<>();
         }
 
+        _extra.clear();
         m_CollectionResultSet.isSet = false;
         m_CollectionResultSet.result.clear();
-        VintageServer.get(m_CollectionResultSet, nomalizeQuery(_query), Server.DATA_MATCHBOX, _extra);
+        VintageServer.get(m_CollectionResultSet, nomalizeQuery(m_OldQuery = _query), Server.DATA_MATCHBOX, _extra);
         population.start();
-    }
-
-    /**
-     *
-     * @param _view
-     */
-    public void onHamburgerClick(View _view){
-        try {
-            if (m_DrawerLayoutLeft.isDrawerOpen(Gravity.LEFT))
-                m_DrawerLayoutLeft.closeDrawer(Gravity.LEFT);
-            else
-                m_DrawerLayoutLeft.openDrawer(Gravity.LEFT);
-        }catch (Exception err){
-            err.printStackTrace();
-        }
     }
 
     /**
@@ -252,6 +239,9 @@ public class VintageCollectionActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Initialize variation normalizer
+     */
     private void initVariationNormalizer(){
         List<String> keys = new ArrayList<>();
         keys.add("red");
@@ -287,7 +277,9 @@ public class VintageCollectionActivity extends AppCompatActivity {
         m_VariationNormalizer = new VintageNormalizer(keys);
     }
 
-
+    /**
+     * Initialize series number normalizer
+     */
     private void initSeriesNormalizer(){
         List<String> keys = new ArrayList<>();
         keys.add("56-A");
@@ -307,7 +299,9 @@ public class VintageCollectionActivity extends AppCompatActivity {
         m_SeriesNumberNormalizer = new VintageNormalizer(keys);
     }
 
-
+    /**
+     * Initialize year normalizer
+     */
     private void initYearNormalizer(){
         List<String> keys = new ArrayList<>();
         keys.add("1953");

@@ -18,11 +18,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@xml/drawer_button_press"
+                android:onClick="onRefreshClick"
                 android:text="@string/refresh"/>
             <Button
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@xml/drawer_button_press"
+                android:onClick="onMatchboxClick"
                 android:text="@string/matchbox_cars"/>
             <Button
                 android:layout_width="match_parent"

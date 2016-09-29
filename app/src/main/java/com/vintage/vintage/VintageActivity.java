@@ -2,6 +2,7 @@ package com.vintage.vintage;
 
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -65,7 +66,39 @@ public class VintageActivity extends VintageCollectionActivity {
         EditText searchEditText = (EditText)findViewById(R.id.title_search_edit_text);
         String query = searchEditText.getText().toString();
 
-        m_lItemImage.clear();
         preformQuery("matchbox_car", query, m_lItemImage);
+    }
+
+    /**
+     * Handle on click event for hamburger press
+     * @param _view
+     */
+    public void onHamburgerClick(View _view){
+        try {
+            if (m_DrawerLayoutLeft.isDrawerOpen(Gravity.LEFT))
+                m_DrawerLayoutLeft.closeDrawer(Gravity.LEFT);
+            else
+                m_DrawerLayoutLeft.openDrawer(Gravity.LEFT);
+        }catch (Exception err){
+            err.printStackTrace();
+        }
+    }
+
+    /**
+     * Handle refresh click event for drawer
+     * @param _view
+     */
+    public void onRefreshClick(View _view){
+        preformQuery("matchbox_car", m_OldQuery, m_lItemImage);
+        onHamburgerClick(_view);
+    }
+
+    /**
+     * Handle matchbox click event for drawer
+     * @param _view
+     */
+    public void onMatchboxClick(View _view){
+        preformQuery("matchbox_car", "matchbox car", m_lItemImage);
+        onHamburgerClick(_view);
     }
 }
