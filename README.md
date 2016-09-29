@@ -1,5 +1,5 @@
 # Vintage - Prototype
-A simple Android application. It main purpose is to provide a  
+A simple Android application. Its main purpose is to provide a  
 single location for collectors to view collectables. 
 
 What the application does:  
