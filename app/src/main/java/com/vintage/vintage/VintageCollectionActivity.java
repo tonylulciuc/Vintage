@@ -4,13 +4,11 @@ import android.content.pm.ActivityInfo;
 import android.graphics.Point;
 import android.os.Handler;
 import android.os.Looper;
-import android.support.v4.app.NotificationManagerCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Layout;
 import android.view.Display;
-import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
@@ -24,26 +22,26 @@ import com.vintage.vintage.server.Normalizer;
 import com.vintage.vintage.server.Server;
 import com.vintage.vintage.server.VintageNormalizer;
 import com.vintage.vintage.server.base.Result;
-import com.vintage.vintage.server.base.SingleItem;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.vintage.vintage.VintageApplication.DeviceSize;
+import static com.vintage.vintage.VintageApplication.SingleItemRequest;
+import static com.vintage.vintage.VintageApplication.VintageItemsLeft;
+import static com.vintage.vintage.VintageApplication.VintageItemsRight;
+
 public class VintageCollectionActivity extends AppCompatActivity {
-    public static Point DeviceSize = null;
     public static Server VintageServer = null;
-    public static Result<SingleItem> SingleItemRequest;
     protected static Result<List<item>> m_CollectionResultSet;
-    protected static List<VintageItem> m_lVintageItemLeft;
-    protected static List<VintageItem> m_lVintageItemRight;
-    protected DrawerLayout m_DrawerLayoutLeft;
-    protected Layout       m_DrawerLayoutContent;
-    protected ListView     m_ContentListLeft;
-    protected ListView     m_ContentListRight;
-    private static Normalizer m_VariationNormalizer = null;
-    private static Normalizer m_YearNormalizer = null;
+    protected DrawerLayout    m_DrawerLayoutLeft;
+    protected Layout          m_DrawerLayoutContent;
+    protected ListView        m_ContentListLeft;
+    protected ListView        m_ContentListRight;
+    private static Normalizer m_VariationNormalizer    = null;
+    private static Normalizer m_YearNormalizer         = null;
     private static Normalizer m_SeriesNumberNormalizer = null;
-    protected static String m_OldQuery = null;
+    protected static String   m_OldQuery               = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,14 +53,15 @@ public class VintageCollectionActivity extends AppCompatActivity {
         m_ContentListRight  = (ListView)findViewById(R.id.content_list_right);
         m_DrawerLayoutLeft  = (DrawerLayout)findViewById(R.id.search_drawer_layout);
 
+
         // If device dimensions were not calculated
         if (DeviceSize == null)
             getDeviceDimensions();
 
         m_ContentListLeft.setVerticalScrollBarEnabled(false);
         m_ContentListRight.setVerticalScrollBarEnabled(false);
-        m_ContentListLeft.setOnItemClickListener(new VintageOnItemClickListener(this, m_lVintageItemLeft));
-        m_ContentListRight.setOnItemClickListener(new VintageOnItemClickListener(this, m_lVintageItemRight));
+        m_ContentListLeft.setOnItemClickListener(new VintageOnItemClickListener(this, VintageItemsLeft));
+        m_ContentListRight.setOnItemClickListener(new VintageOnItemClickListener(this, VintageItemsRight));
 
         initNormalizer();
         adjustTitle();
@@ -74,11 +73,12 @@ public class VintageCollectionActivity extends AppCompatActivity {
     private void adjustTitle(){
         View scrollSearch = findViewById(R.id.title_search_scroll);
         View buttonSearch = findViewById(R.id.title_search_button);
-        ViewGroup.LayoutParams lpScrollSearch = scrollSearch.getLayoutParams();
-        ViewGroup.LayoutParams lpButtonSearch = buttonSearch.getLayoutParams();
+        ViewGroup.LayoutParams lpScrollSearch     = scrollSearch.getLayoutParams();
+        ViewGroup.LayoutParams lpButtonSearch     = buttonSearch.getLayoutParams();
         ViewGroup.LayoutParams lpContentListLeft  = m_ContentListLeft.getLayoutParams();
         ViewGroup.LayoutParams lpContentListRight = m_ContentListRight.getLayoutParams();
 
+        // If Orientation is portrait
         if (this.getResources().getConfiguration().orientation == ActivityInfo.SCREEN_ORIENTATION_PORTRAIT) {
             lpScrollSearch.width     = DeviceSize.x - (int)((double)DeviceSize.x * 0.25 + (double)(2 * lpButtonSearch.width));
             lpContentListRight.width = lpContentListLeft.width = DeviceSize.x / 2;
@@ -87,6 +87,7 @@ public class VintageCollectionActivity extends AppCompatActivity {
             lpContentListRight.width = lpContentListLeft.width = DeviceSize.y / 2;
         }
 
+        // Set values
         scrollSearch.setLayoutParams(lpScrollSearch);
         m_ContentListLeft.setLayoutParams(lpContentListLeft);
         m_ContentListRight.setLayoutParams(lpContentListRight);
@@ -96,11 +97,11 @@ public class VintageCollectionActivity extends AppCompatActivity {
      * Resize content list to fit query results
      */
     protected void resizeContentLists(){
-        ViewGroup.LayoutParams lpContentListLeft = m_ContentListLeft.getLayoutParams();
+        ViewGroup.LayoutParams lpContentListLeft  = m_ContentListLeft.getLayoutParams();
         ViewGroup.LayoutParams lpContentListRight = m_ContentListRight.getLayoutParams();
-        int density = getResources().getDisplayMetrics().densityDpi;
-        int listLeftSize = m_lVintageItemLeft.size();
-        int listRightSize = m_lVintageItemRight.size();
+        int density       = getResources().getDisplayMetrics().densityDpi;
+        int listLeftSize  = VintageItemsLeft.size();
+        int listRightSize = VintageItemsRight.size();
 
         lpContentListRight.height = density * listRightSize;
         lpContentListLeft.height  = density * listLeftSize;
@@ -113,7 +114,8 @@ public class VintageCollectionActivity extends AppCompatActivity {
      */
     private void getDeviceDimensions(){
         WindowManager manager = getWindowManager();
-        Display display = manager.getDefaultDisplay();
+        Display display       = manager.getDefaultDisplay();
+
         display.getSize(DeviceSize = new Point());
     }
 
@@ -141,10 +143,12 @@ public class VintageCollectionActivity extends AppCompatActivity {
             }
         });
 
+        // If not initialized
         if (m_CollectionResultSet.result == null){
             m_CollectionResultSet.result = new ArrayList<>();
         }
 
+        // Remove previous elements contained in list
         _extra.clear();
         m_CollectionResultSet.isSet = false;
         m_CollectionResultSet.result.clear();
@@ -158,14 +162,14 @@ public class VintageCollectionActivity extends AppCompatActivity {
     protected void populateContentLists(){
         VintageAdapter vintageAdapter;
 
-        m_lVintageItemRight.add(new VintageItem());
-        m_lVintageItemRight.add(new VintageItem());
-        m_lVintageItemRight.add(new VintageItem());
-        m_lVintageItemRight.add(new VintageItem());
-        m_lVintageItemLeft.add(new VintageItem());
-        m_lVintageItemLeft.add(new VintageItem());
+        VintageItemsRight.add(new VintageItem());
+        VintageItemsRight.add(new VintageItem());
+        VintageItemsRight.add(new VintageItem());
+        VintageItemsRight.add(new VintageItem());
+        VintageItemsLeft.add(new VintageItem());
+        VintageItemsLeft.add(new VintageItem());
 
-        vintageAdapter = new VintageAdapter(this, R.layout.layout_vintage_item_list, m_lVintageItemRight);
+        vintageAdapter = new VintageAdapter(this, R.layout.layout_vintage_item_list, VintageItemsRight);
 
         m_ContentListLeft.setAdapter(vintageAdapter);
         m_ContentListRight.setAdapter(vintageAdapter);
@@ -183,25 +187,32 @@ public class VintageCollectionActivity extends AppCompatActivity {
         if (_query.toLowerCase().contains("matchbox car") || _query.toLowerCase().contains("matchbox_car")){
             query = "item_name = \'matchbox_car\'";
         }else{
+
+            // Attempt to find query pertaining to variation information
             normalizedQuery = m_VariationNormalizer.normalize(_query.toLowerCase(), "variation");
 
+            // If found
             if (normalizedQuery.length() > 0)
                 query = normalizedQuery;
 
-
+            // Attempt to find query pertaining to series number
             normalizedQuery = m_SeriesNumberNormalizer.normalize(_query, "series_number");
 
+            // if something was found
             if (normalizedQuery.length() > 0) {
+                // Does there exist a 'norm' query statement
                 if (query.length() > 0)
                     query += " OR " + normalizedQuery;
                 else
                     query = normalizedQuery;
             }
 
-
+            // Attempt to find query pertaining to the year it was made
             normalizedQuery = m_YearNormalizer.normalize(_query, "year");
 
+            // if something was found
             if (normalizedQuery.length() > 0) {
+                // Does there exist a 'norm' query statement
                 if (query.length() > 0)
                     query += " OR " + normalizedQuery;
                 else
@@ -219,8 +230,8 @@ public class VintageCollectionActivity extends AppCompatActivity {
         if (VintageServer == null){
             VintageServer         = new Server(this);
             SingleItemRequest     = new Result<>();
-            m_lVintageItemLeft    = new ArrayList<>();
-            m_lVintageItemRight   = new ArrayList<>();
+            VintageItemsLeft = new ArrayList<>();
+            VintageItemsRight = new ArrayList<>();
             m_CollectionResultSet = new Result<>();
 
             // Login into server to access database
