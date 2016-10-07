@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.TextView;
 
 import com.vintage.vintage.adapter.VintageAdapter;
 import com.vintage.vintage.adapter.VintageItem;
@@ -17,7 +16,6 @@ import java.util.List;
 /**
  * Created by Antony Lulciuc on 9/27/2016.
  */
-
 public class VintageActivity extends VintageCollectionActivity {
     protected static List<Object> m_lItemImage = new ArrayList<>();
 
@@ -25,7 +23,7 @@ public class VintageActivity extends VintageCollectionActivity {
     public void onCreate(Bundle _savedInstance){
         super.onCreate(_savedInstance);
 
-        if (m_lVintageItemLeft.size() == 0 && m_lVintageItemRight.size() == 0)
+        if (VintageItemsLeft.size() == 0 && VintageItemsRight.size() == 0)
             preformQuery("matchbox_car", "matchbox car", m_lItemImage);
         else{
             this.populateContentLists();
@@ -38,27 +36,26 @@ public class VintageActivity extends VintageCollectionActivity {
     protected void populateContentLists() {
         if (m_CollectionResultSet.result != null) {
             List<item> items = m_CollectionResultSet.result;
-            int count = 0;
+            int count        = 0;
 
-            m_lVintageItemLeft.clear();
-            m_lVintageItemRight.clear();
+            VintageItemsLeft.clear();
+            VintageItemsRight.clear();
 
             for (item i : items) {
                 if (count > 0) {
                     if ((count % 2) == 0)
-                        m_lVintageItemLeft.add(new VintageItem(i, (Bitmap)m_lItemImage.get(count)));
-
+                        VintageItemsLeft.add(new VintageItem(i, (Bitmap)m_lItemImage.get(count)));
                     else
-                        m_lVintageItemRight.add(new VintageItem(i, (Bitmap)m_lItemImage.get(count)));
+                        VintageItemsRight.add(new VintageItem(i, (Bitmap)m_lItemImage.get(count)));
                 } else {
-                    m_lVintageItemLeft.add(new VintageItem(i, (Bitmap)m_lItemImage.get(count)));
+                    VintageItemsLeft.add(new VintageItem(i, (Bitmap)m_lItemImage.get(count)));
                 }
 
                 ++count;
             }
 
-            m_ContentListLeft.setAdapter(new VintageAdapter(this, R.layout.layout_vintage_item_list, m_lVintageItemLeft));
-            m_ContentListRight.setAdapter(new VintageAdapter(this, R.layout.layout_vintage_item_list, m_lVintageItemRight));
+            m_ContentListLeft.setAdapter(new VintageAdapter(this, R.layout.layout_vintage_item_list, VintageItemsLeft));
+            m_ContentListRight.setAdapter(new VintageAdapter(this, R.layout.layout_vintage_item_list, VintageItemsRight));
         }
     }
 
